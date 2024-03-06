@@ -1,19 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Usuario } from './entities/usuario.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsuarioService {
+  constructor(@InjectRepository(Usuario)private UsuarioRepository: Repository<Usuario> ){}
+ 
   create(createUsuarioDto: CreateUsuarioDto) {
-    return 'This action adds a new usuario';
+    const usuario = this.UsuarioRepository.create(createUsuarioDto);
+    return this.UsuarioRepository.save(usuario)
   }
 
   findAll() {
-    return `This action returns all usuario`;
+    return `This action returns all usuarios`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} usuario`;
+  async findOne(id: number) {
+    return await this.UsuarioRepository.findOneBy({id})
   }
 
   update(id: number, updateUsuarioDto: UpdateUsuarioDto) {

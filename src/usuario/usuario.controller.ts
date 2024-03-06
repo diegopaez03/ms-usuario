@@ -3,32 +3,33 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import { UsuarioService } from './usuario.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
+import { UsuarioMSG } from 'src/common/constants';
 
 @Controller()
 export class UsuarioController {
   constructor(private readonly usuarioService: UsuarioService) {}
 
-  @MessagePattern('createUsuario')
+  @MessagePattern(UsuarioMSG.CREATE)
   create(@Payload() createUsuarioDto: CreateUsuarioDto) {
     return this.usuarioService.create(createUsuarioDto);
   }
 
-  @MessagePattern('findAllUsuario')
+  @MessagePattern(UsuarioMSG.FIND_ALL)
   findAll() {
     return this.usuarioService.findAll();
   }
 
-  @MessagePattern('findOneUsuario')
+  @MessagePattern(UsuarioMSG.FIND_ONE)
   findOne(@Payload() id: number) {
     return this.usuarioService.findOne(id);
   }
 
-  @MessagePattern('updateUsuario')
+  @MessagePattern(UsuarioMSG.UPDATE)
   update(@Payload() updateUsuarioDto: UpdateUsuarioDto) {
     return this.usuarioService.update(updateUsuarioDto.id, updateUsuarioDto);
   }
 
-  @MessagePattern('removeUsuario')
+  @MessagePattern(UsuarioMSG.DELETE)
   remove(@Payload() id: number) {
     return this.usuarioService.remove(id);
   }
